@@ -74,12 +74,18 @@ module.exports = (window => {
   };
 
   const generateId = () => {
-    return 'stories-' + Math.random().toString(36).substr(2, 9);
+    return (
+      'stories-' +
+      Math.random()
+        .toString(36)
+        .substr(2, 9)
+    );
   };
 
   /* Zuckera */
   const ZuckJS = function (timeline, options) {
     const zuck = this;
+
     const option = function (name, prop) {
       const type = function (what) {
         return typeof what !== 'undefined';
@@ -111,14 +117,11 @@ module.exports = (window => {
             document.msFullscreenElement
           ) {
             if (document.exitFullscreen) {
-              document.exitFullscreen()
-                .catch(() => {});
+              document.exitFullscreen().catch(() => {});
             } else if (document.mozCancelFullScreen) {
-              document.mozCancelFullScreen()
-                .catch(() => {});
+              document.mozCancelFullScreen().catch(() => {});
             } else if (document.mozCancelFullScreen) {
-              document.mozCancelFullScreen()
-                .catch(() => {});
+              document.mozCancelFullScreen().catch(() => {});
             }
           }
         } else {
@@ -133,13 +136,14 @@ module.exports = (window => {
           }
         }
       } catch (e) {
-        console.warn('[Zuck.js] Can\'t access fullscreen');
+        console.warn("[Zuck.js] Can't access fullscreen");
       }
     };
 
     const translate = function (element, to, duration, ease) {
       const direction = to > 0 ? 1 : -1;
-      const to3d = (Math.abs(to) / query('#zuck-modal').offsetWidth) * 90 * direction;
+      const to3d =
+        (Math.abs(to) / query('#zuck-modal').offsetWidth) * 90 * direction;
 
       if (option('cubeEffect')) {
         const scaling = to3d === 0 ? 'scale(0.95)' : 'scale(0.930,0.930)';
@@ -291,13 +295,16 @@ module.exports = (window => {
               <a class="item-link" href="${get(itemData, 'link')}">
                 <span class="item-preview">
                   <img lazy="eager" src="${
-                    (option('avatars') || !get(itemData, 'currentPreview'))
-                    ? get(itemData, 'photo')
-                    : get(itemData, 'currentPreview')
+                    option('avatars') || !get(itemData, 'currentPreview')
+                      ? get(itemData, 'photo')
+                      : get(itemData, 'currentPreview')
                   }" />
                 </span>
                 <span class="info" itemProp="author" itemScope itemType="http://schema.org/Person">
-                  <strong class="name" itemProp="name">${get(itemData, 'name')}</strong>
+                  <strong class="name" itemProp="name">${get(
+                    itemData,
+                    'name'
+                  )}</strong>
                   <span class="time">${get(itemData, 'lastUpdatedAgo')}</span>
                 </span>
               </a>
@@ -307,7 +314,17 @@ module.exports = (window => {
         },
 
         timelineStoryItem (itemData) {
-          const reserved = ['id', 'seen', 'src', 'link', 'linkText', 'time', 'type', 'length', 'preview'];
+          const reserved = [
+            'id',
+            'seen',
+            'src',
+            'link',
+            'linkText',
+            'time',
+            'type',
+            'length',
+            'preview'
+          ];
           let attributes = `
             href="${get(itemData, 'src')}"
             data-link="${get(itemData, 'link')}"
@@ -332,20 +349,33 @@ module.exports = (window => {
           return `<div class="story-viewer">
                     <div class="head">
                       <div class="left">
-                        ${option('backButton') ? '<a class="back">&lsaquo;</a>' : ''}
+                        ${
+                          option('backButton')
+                            ? '<a class="back">&lsaquo;</a>'
+                            : ''
+                        }
 
                         <span class="item-preview">
-                          <img lazy="eager" class="profilePhoto" src="${get(storyData, 'photo')}" />
+                          <img lazy="eager" class="profilePhoto" src="${get(
+                            storyData,
+                            'photo'
+                          )}" />
                         </span>
 
                         <div class="info">
-                          <strong class="name">${get(storyData, 'name')}</strong>
+                          <strong class="name">${get(
+                            storyData,
+                            'name'
+                          )}</strong>
                           <span class="time">${get(storyData, 'timeAgo')}</span>
                         </div>
                       </div>
 
                       <div class="right">
-                        <span class="time">${get(currentStoryItem, 'timeAgo')}</span>
+                        <span class="time">${get(
+                          currentStoryItem,
+                          'timeAgo'
+                        )}</span>
                         <span class="loading"></span>
                         <a class="close" tabIndex="2">&times;</a>
                       </div>
@@ -357,40 +387,71 @@ module.exports = (window => {
 
                     ${
                       option('paginationArrows')
-                      ? `<div class="slides-pagination">
+                        ? `<div class="slides-pagination">
                           <span class="previous">&lsaquo;</span>
                           <span class="next">&rsaquo;</span>
                         </div>`
-                      : ''
+                        : ''
                     }
                   </div>`;
         },
 
         viewerItemPointer (index, currentIndex, item) {
           return `<span 
-                    class="${currentIndex === index ? 'active' : ''} ${get(item, 'seen') === true ? 'seen' : ''}"
+                    class="${currentIndex === index ? 'active' : ''} ${
+            get(item, 'seen') === true ? 'seen' : ''
+          }"
                     data-index="${index}" data-item-id="${get(item, 'id')}">
-                      <b style="animation-duration:${get(item, 'length') === '' ? '3' : get(item, 'length')}s"></b>
+                      <b style="animation-duration:${
+                        get(item, 'length') === '' ? '3' : get(item, 'length')
+                      }s"></b>
                   </span>`;
         },
 
         viewerItemBody (index, currentIndex, item) {
           return `<div 
-                    class="item ${get(item, 'seen') === true ? 'seen' : ''} ${currentIndex === index ? 'active' : ''}"
-                    data-time="${get(item, 'time')}" data-type="${get(item, 'type')}" data-index="${index}" data-item-id="${get(item, 'id')}">
+                    class="item ${get(item, 'seen') === true ? 'seen' : ''} ${
+            currentIndex === index ? 'active' : ''
+          }"
+                    data-time="${get(item, 'time')}" data-type="${get(
+            item,
+            'type'
+          )}" data-index="${index}" data-item-id="${get(item, 'id')}">
                     ${
                       get(item, 'type') === 'video'
-                      ? `<video class="media" muted webkit-playsinline playsinline preload="auto" src="${get(item, 'src')}" ${get(item, 'type')}></video>
-                        <b class="tip muted">${option('language', 'unmute')}</b>`
-                      : `<img loading="auto" class="media" src="${get(item, 'src')}" ${get(item, 'type')} />
-                    `}
+                        ? `<video id="video-js" bigPlayButton="false"
+                        loadingSpinner="false"
+                        aspectRatio="9:16" data-setup='{}' style="    height: 100%;width: auto;"
+                       class="media" muted webkit-playsinline playsinline >
+                        <source  bigPlayButton="false"
+                        src="${get(item, 'src')}"
+                        type="${get(item, 'videoType')}">
+                          </video>
+                        <b class="tip muted">${option(
+                          'language',
+                          'unmute'
+                        )}</b>`
+                        : `<img loading="auto" class="media" src="${get(
+                            item,
+                            'src'
+                          )}" ${get(item, 'type')} />
+                    `
+                    }
 
                     ${
                       get(item, 'link')
-                      ? `<a class="tip link" href="${get(item, 'link')}" rel="noopener" target="_blank">
-                            ${!get(item, 'linkText') || get(item, 'linkText') === '' ? option('language', 'visitLink') : get(item, 'linkText')}
+                        ? `<a class="tip link" href="${get(
+                            item,
+                            'link'
+                          )}" rel="noopener" target="_blank">
+                            ${
+                              !get(item, 'linkText') ||
+                              get(item, 'linkText') === ''
+                                ? option('language', 'visitLink')
+                                : get(item, 'linkText')
+                            }
                           </a>`
-                      : ''
+                        : ''
                     }
                   </div>`;
         }
@@ -420,7 +481,6 @@ module.exports = (window => {
 
       if (!modalZuckContainer && !zuck.hasModal) {
         zuck.hasModal = true;
-
         modalZuckContainer = document.createElement('div');
         modalZuckContainer.id = 'zuck-modal';
 
@@ -480,7 +540,7 @@ module.exports = (window => {
 
         if (
           (!slideItems.previous && !direction) ||
-            (!slideItems.next && direction)
+          (!slideItems.next && direction)
         ) {
           if (!option('rtl')) {
             return false;
@@ -517,7 +577,9 @@ module.exports = (window => {
           }
 
           if (target !== '' && slideItems[target] && useless !== '') {
-            const currentStory = slideItems[target].getAttribute('data-story-id');
+            const currentStory = slideItems[target].getAttribute(
+              'data-story-id'
+            );
             zuck.internalData.currentStory = currentStory;
 
             const oldStory = query(`#zuck-modal .story-viewer.${useless}`);
@@ -554,8 +616,7 @@ module.exports = (window => {
                 10
               );
 
-              items[0].innerHTML =
-                  `<b style="${duration.style.cssText}"></b>`;
+              items[0].innerHTML = `<b style="${duration.style.cssText}"></b>`;
               onAnimationEnd(items[0].firstElementChild, () => {
                 zuck.nextItem(false);
               });
@@ -564,7 +625,9 @@ module.exports = (window => {
             translate(modalSlider, '0', 0, null);
 
             if (items) {
-              const storyViewer = query(`#zuck-modal .story-viewer[data-story-id="${currentStory}"]`);
+              const storyViewer = query(
+                `#zuck-modal .story-viewer[data-story-id="${currentStory}"]`
+              );
 
               playVideoItem(storyViewer, [items[0], items[1]], true);
             }
@@ -578,7 +641,10 @@ module.exports = (window => {
         const modalSlider = query(`#zuck-modal-slider-${id}`);
         const storyItems = get(storyData, 'items');
 
-        storyData.timeAgo = storyItems && storyItems[0] ? timeAgo(get(storyItems[0], 'time')) : '';
+        storyData.timeAgo =
+          storyItems && storyItems[0]
+            ? timeAgo(get(storyItems[0], 'time'))
+            : '';
 
         let htmlItems = '';
         let pointerItems = '';
@@ -586,7 +652,9 @@ module.exports = (window => {
         const storyId = get(storyData, 'id');
         const slides = document.createElement('div');
         const currentItem = get(storyData, 'currentItem') || 0;
-        const exists = query(`#zuck-modal .story-viewer[data-story-id="${storyId}"]`);
+        const exists = query(
+          `#zuck-modal .story-viewer[data-story-id="${storyId}"]`
+        );
 
         if (exists) {
           return false;
@@ -602,8 +670,16 @@ module.exports = (window => {
             item.seen = true;
           }
 
-          pointerItems += option('template', 'viewerItemPointer')(i, currentItem, item);
-          htmlItems += option('template', 'viewerItemBody')(i, currentItem, item);
+          pointerItems += option('template', 'viewerItemPointer')(
+            i,
+            currentItem,
+            item
+          );
+          htmlItems += option('template', 'viewerItemBody')(
+            i,
+            currentItem,
+            item
+          );
         });
 
         slides.innerHTML = htmlItems;
@@ -645,14 +721,21 @@ module.exports = (window => {
         }
 
         const storyViewerWrap = document.createElement('div');
-        storyViewerWrap.innerHTML = option('template', 'viewerItem')(storyData, currentItem);
+        storyViewerWrap.innerHTML = option('template', 'viewerItem')(
+          storyData,
+          currentItem
+        );
 
         const storyViewer = storyViewerWrap.firstElementChild;
 
-        storyViewer.className = `story-viewer muted ${className} ${!forcePlay ? 'stopped' : ''} ${option('backButton') ? 'with-back-button' : ''}`;
+        storyViewer.className = `story-viewer muted ${className} ${
+          !forcePlay ? 'stopped' : ''
+        } ${option('backButton') ? 'with-back-button' : ''}`;
 
         storyViewer.setAttribute('data-story-id', storyId);
-        storyViewer.querySelector('.slides-pointers .wrap').innerHTML = pointerItems;
+        storyViewer.querySelector(
+          '.slides-pointers .wrap'
+        ).innerHTML = pointerItems;
 
         each(storyViewer.querySelectorAll('.close, .back'), (i, el) => {
           el.onclick = e => {
@@ -664,14 +747,23 @@ module.exports = (window => {
         storyViewer.appendChild(slides);
 
         if (className === 'viewing') {
-          playVideoItem(storyViewer, storyViewer.querySelectorAll(`[data-index="${currentItem}"].active`), false);
+          playVideoItem(
+            storyViewer,
+            storyViewer.querySelectorAll(
+              `[data-index="${currentItem}"].active`
+            ),
+            false
+          );
         }
 
-        each(storyViewer.querySelectorAll('.slides-pointers [data-index] > b'), (i, el) => {
-          onAnimationEnd(el, () => {
-            zuck.nextItem(false);
-          });
-        });
+        each(
+          storyViewer.querySelectorAll('.slides-pointers [data-index] > b'),
+          (i, el) => {
+            onAnimationEnd(el, () => {
+              zuck.nextItem(false);
+            });
+          }
+        );
 
         if (className === 'previous') {
           prepend(modalSlider, storyViewer);
@@ -703,8 +795,12 @@ module.exports = (window => {
           const touches = event.touches ? event.touches[0] : event;
           const pos = findPos(query('#zuck-modal .story-viewer.viewing'));
 
-          modalContainer.slideWidth = query('#zuck-modal .story-viewer').offsetWidth;
-          modalContainer.slideHeight = query('#zuck-modal .story-viewer').offsetHeight;
+          modalContainer.slideWidth = query(
+            '#zuck-modal .story-viewer'
+          ).offsetWidth;
+          modalContainer.slideHeight = query(
+            '#zuck-modal .story-viewer'
+          ).offsetHeight;
 
           position = {
             x: pos[0],
@@ -721,7 +817,7 @@ module.exports = (window => {
             valid: true
           };
 
-          if (clientY < 80 || clientY > (modalContainer.slideHeight - 80)) {
+          if (clientY < 80 || clientY > modalContainer.slideHeight - 80) {
             touchOffset.valid = false;
           } else {
             event.preventDefault();
@@ -783,15 +879,20 @@ module.exports = (window => {
           const storyViewer = query('#zuck-modal .viewing');
           const lastTouchOffset = touchOffset;
 
-          const duration = touchOffset ? Date.now() - touchOffset.time : undefined;
-          const isValid = (Number(duration) < 300 && Math.abs(delta.x) > 25) || Math.abs(delta.x) > modalContainer.slideWidth / 3;
+          const duration = touchOffset
+            ? Date.now() - touchOffset.time
+            : undefined;
+          const isValid =
+            (Number(duration) < 300 && Math.abs(delta.x) > 25) ||
+            Math.abs(delta.x) > modalContainer.slideWidth / 3;
           const direction = delta.x < 0;
 
-          const index = direction ? query('#zuck-modal .story-viewer.next') : query('#zuck-modal .story-viewer.previous');
+          const index = direction
+            ? query('#zuck-modal .story-viewer.next')
+            : query('#zuck-modal .story-viewer.previous');
           const isOutOfBounds = (direction && !index) || (!direction && !index);
 
           if (touchOffset && !touchOffset.valid) {
-
           } else {
             if (delta) {
               if (!isScrolling) {
@@ -820,7 +921,11 @@ module.exports = (window => {
             }
 
             if (storyViewer) {
-              playVideoItem(storyViewer, storyViewer.querySelectorAll('.active'), false);
+              playVideoItem(
+                storyViewer,
+                storyViewer.querySelectorAll('.active'),
+                false
+              );
               storyViewer.classList.remove('longPress');
               storyViewer.classList.remove('paused');
             }
@@ -831,7 +936,10 @@ module.exports = (window => {
 
               const navigateItem = function () {
                 if (!direction) {
-                  if (lastTouchOffset.x > window.screen.availWidth / 3 || !option('previousTap')) {
+                  if (
+                    lastTouchOffset.x > window.screen.availWidth / 3 ||
+                    !option('previousTap')
+                  ) {
                     if (option('rtl')) {
                       zuck.navigateItem('previous', event);
                     } else {
@@ -909,8 +1017,8 @@ module.exports = (window => {
             const tryFullScreen = function () {
               if (
                 modalContainer.classList.contains('fullscreen') &&
-                  option('autoFullScreen') &&
-                  window.screen.availWidth <= 1024
+                option('autoFullScreen') &&
+                window.screen.availWidth <= 1024
               ) {
                 fullScreen(modalContainer);
               }
@@ -924,11 +1032,15 @@ module.exports = (window => {
               );
               const pos = findPos(storyEl);
 
-              modalContainer.style.marginLeft = `${pos[0] + storyEl.offsetWidth / 2}px`;
-              modalContainer.style.marginTop = `${pos[1] + storyEl.offsetHeight / 2}px`;
+              modalContainer.style.marginLeft = `${pos[0] +
+                storyEl.offsetWidth / 2}px`;
+              modalContainer.style.marginTop = `${pos[1] +
+                storyEl.offsetHeight / 2}px`;
               modalContainer.style.display = 'block';
 
-              modalContainer.slideWidth = query('#zuck-modal .story-viewer').offsetWidth;
+              modalContainer.slideWidth = query(
+                '#zuck-modal .story-viewer'
+              ).offsetWidth;
 
               setTimeout(() => {
                 modalContainer.classList.add('animated');
@@ -939,7 +1051,9 @@ module.exports = (window => {
               }, 300); // because effects
             } else {
               modalContainer.style.display = 'block';
-              modalContainer.slideWidth = query('#zuck-modal .story-viewer').offsetWidth;
+              modalContainer.slideWidth = query(
+                '#zuck-modal .story-viewer'
+              ).offsetWidth;
 
               tryFullScreen();
             }
@@ -1001,7 +1115,10 @@ module.exports = (window => {
             }
           };
 
-          option('callbacks', 'onClose')(zuck.internalData.currentStory, callback);
+          option('callbacks', 'onClose')(
+            zuck.internalData.currentStory,
+            callback
+          );
         }
       };
     };
@@ -1011,7 +1128,9 @@ module.exports = (window => {
     /* parse functions */
     const parseItems = function (story, forceUpdate) {
       const storyId = story.getAttribute('data-id');
-      const storyItems = document.querySelectorAll(`#${id} [data-id="${storyId}"] .items > li`);
+      const storyItems = document.querySelectorAll(
+        `#${id} [data-id="${storyId}"] .items > li`
+      );
       const items = [];
 
       if (!option('reactive') || forceUpdate) {
@@ -1033,7 +1152,15 @@ module.exports = (window => {
           // collect all attributes
           const all = a.attributes;
           // exclude the reserved options
-          const reserved = ['data-id', 'href', 'data-length', 'data-type', 'data-time', 'data-link', 'data-linktext'];
+          const reserved = [
+            'data-id',
+            'href',
+            'data-length',
+            'data-type',
+            'data-time',
+            'data-link',
+            'data-linktext'
+          ];
           for (let z = 0; z < all.length; z++) {
             if (reserved.indexOf(all[z].nodeName) === -1) {
               item[all[z].nodeName.replace('data-', '')] = all[z].nodeValue;
@@ -1079,8 +1206,12 @@ module.exports = (window => {
         zuck.data[storyId].id = storyId; // story id
         zuck.data[storyId].photo = story.getAttribute('data-photo'); // story preview (or user photo)
         zuck.data[storyId].name = story.querySelector('.name').innerText;
-        zuck.data[storyId].link = story.querySelector('.item-link').getAttribute('href');
-        zuck.data[storyId].lastUpdated = story.getAttribute('data-last-updated');
+        zuck.data[storyId].link = story
+          .querySelector('.item-link')
+          .getAttribute('href');
+        zuck.data[storyId].lastUpdated = story.getAttribute(
+          'data-last-updated'
+        );
         zuck.data[storyId].seen = seen;
 
         if (!zuck.data[storyId].items) {
@@ -1113,7 +1244,9 @@ module.exports = (window => {
       const whatElementYouMean = `${what}ElementSibling`;
 
       if (currentStory) {
-        const foundStory = query(`#${id} [data-id="${currentStory}"]`)[whatElementYouMean];
+        const foundStory = query(`#${id} [data-id="${currentStory}"]`)[
+          whatElementYouMean
+        ];
 
         if (foundStory) {
           const storyId = foundStory.getAttribute('data-id');
@@ -1297,7 +1430,7 @@ module.exports = (window => {
       modal.next();
     };
 
-    zuck.remove = (storyId) => {
+    zuck.remove = storyId => {
       const story = query(`#${id} > [data-id="${storyId}"]`);
 
       story.parentNode.removeChild(story);
@@ -1327,7 +1460,9 @@ module.exports = (window => {
     };
 
     zuck.removeItem = (storyId, itemId) => {
-      const item = query(`#${id} > [data-id="${storyId}"] [data-id="${itemId}"]`);
+      const item = query(
+        `#${id} > [data-id="${storyId}"] [data-id="${itemId}"]`
+      );
 
       if (!option('reactive')) {
         timeline.parentNode.removeChild(item);
@@ -1337,19 +1472,25 @@ module.exports = (window => {
     zuck.navigateItem = zuck.nextItem = (direction, event) => {
       const currentStory = zuck.internalData.currentStory;
       const currentItem = zuck.data[currentStory].currentItem;
-      const storyViewer = query(`#zuck-modal .story-viewer[data-story-id="${currentStory}"]`);
+      const storyViewer = query(
+        `#zuck-modal .story-viewer[data-story-id="${currentStory}"]`
+      );
       const directionNumber = direction === 'previous' ? -1 : 1;
 
       if (!storyViewer || storyViewer.touchMove === 1) {
         return false;
       }
 
-      const currentItemElements = storyViewer.querySelectorAll(`[data-index="${currentItem}"]`);
+      const currentItemElements = storyViewer.querySelectorAll(
+        `[data-index="${currentItem}"]`
+      );
       const currentPointer = currentItemElements[0];
       const currentItemElement = currentItemElements[1];
 
       const navigateItem = currentItem + directionNumber;
-      const nextItems = storyViewer.querySelectorAll(`[data-index="${navigateItem}"]`);
+      const nextItems = storyViewer.querySelectorAll(
+        `[data-index="${navigateItem}"]`
+      );
       const nextPointer = nextItems[0];
       const nextItem = nextItems[1];
 
@@ -1376,15 +1517,22 @@ module.exports = (window => {
             el.innerText = timeAgo(nextItem.getAttribute('data-time'));
           });
 
-          zuck.data[currentStory].currentItem = zuck.data[currentStory].currentItem + directionNumber;
+          zuck.data[currentStory].currentItem =
+            zuck.data[currentStory].currentItem + directionNumber;
 
           playVideoItem(storyViewer, nextItems, event);
         };
 
         let callback = option('callbacks', 'onNavigateItem');
-        callback = !callback ? option('callbacks', 'onNextItem') : option('callbacks', 'onNavigateItem');
+        callback = !callback
+          ? option('callbacks', 'onNextItem')
+          : option('callbacks', 'onNavigateItem');
 
-        callback(currentStory, nextItem.getAttribute('data-story-id'), navigateItemCallback);
+        callback(
+          currentStory,
+          nextItem.getAttribute('data-story-id'),
+          navigateItemCallback
+        );
       } else if (storyViewer) {
         if (direction !== 'previous') {
           modal.next(event);
@@ -1435,7 +1583,9 @@ module.exports = (window => {
       const list = option('list') ? 'list' : 'carousel';
       const rtl = option('rtl') ? 'rtl' : '';
 
-      timeline.className += ` stories ${avatars} ${list} ${(`${option('skin')}`).toLowerCase()} ${rtl}`;
+      timeline.className += ` stories ${avatars} ${list} ${`${option(
+        'skin'
+      )}`.toLowerCase()} ${rtl}`;
 
       return zuck;
     };
@@ -1448,7 +1598,7 @@ module.exports = (window => {
     const timelineItem = {
       id,
       photo,
-      name,
+      name: '2=2' + name,
       link,
       lastUpdated,
       items: []
@@ -1461,7 +1611,17 @@ module.exports = (window => {
     return timelineItem;
   };
 
-  ZuckJS.buildStoryItem = (id, type, length, src, preview, link, linkText, seen, time) => {
+  ZuckJS.buildStoryItem = (
+    id,
+    type,
+    length,
+    src,
+    preview,
+    link,
+    linkText,
+    seen,
+    time
+  ) => {
     return {
       id,
       type,
